@@ -1,0 +1,30 @@
+
+Expr : (VAR KEYWORD = Expr)
+     : COMPExpr ((AND) || (OR) COMPExpr)*
+
+COMPExpr :arth-Expr ((>= ) || (<= ) || ( == ) || (>) || ( <) arth-Expr)*
+         :NOT COMPExpr
+     
+arth-Expr:term ((+|-)term) *
+
+term : call_Rule ((*|/) Factor) *
+
+
+call_Rule  : Factor (LPARN (expr(,expr)*))? RPARN ?
+
+Factor : INT | FLOAT | Identifier
+       :( Expr )
+       :IFexpr
+       :Forexpr
+       :Whileepxr
+       :funcdef
+
+?-> 0/1 times
+
+IFexpr : IF EXPR THEN EXPR (ELIF EXPR THEN EXPR)* (ELSE EXPR)?
+
+Forexpr : FOR ID = EXPR TO EXPR (STEP Expr)? THEN EXPR
+
+while-expr : WHILE EXPR THEN EXPR
+
+funcdef : FUN ID ? ( ID (,ID)*) -> EXPR
